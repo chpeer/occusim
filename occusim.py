@@ -216,12 +216,13 @@ class OccuSim(hass.Hass):
         self.step = kwargs["step"]
         self.log_notify("Executing step {}".format(self.step))
         for arg in kwargs:
-            m = re.match('.+_(on)_(.+)', arg)
-            if m.group(1) == 'on':
-                self.activate(kwargs[arg], "on", m.group(2))
-            elif m.group(1) == 'off':
-                self.activate(kwargs[arg], "off", m.group(2))
-
+            m = re.match('.+_(.+)_(.+)', arg)
+            if m:
+                if m.group(1) == 'on':
+                    self.activate(kwargs[arg], "on", m.group(2))
+                elif m.group(1) == 'off':
+                    self.activate(kwargs[arg], "off", m.group(2))
+                    
     def activate(self, entity, action, step_index):
         type = action
         m = re.match('event\.(.+)', entity)
