@@ -82,10 +82,15 @@ Random events are not guaranteed to not overlap, however this can add additional
 
 ## input_selects and events
 
-Each step can also fire a home assistant event or modify the value of an input_select to match the name of the step. Both use the on and off step parameters with special values. For instance, to send a `MODE_CHANGE` custom event, with a parameter called `mode` set to the value of the step, use the following:
+Each step can also fire a home assistant event or modify the value of an input_select to match the name of the step. Both use the on and off step parameters with special values. For instance, to send a `MODE_CHANGE` custom event, use the following:
 
 ```yaml
-step_<step name>_on_1: event.MODE_CHANGE,mode
+step_<step name>_on_1: event.MODE_CHANGE
+```
+
+which will result in the following event:
+```yaml
+xxxx: yyy
 ```
 
 To set an input_select called `house_mode` to the value of the current step use the following:
