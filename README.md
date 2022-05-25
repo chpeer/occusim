@@ -2,6 +2,10 @@
 
 OccuSim is a versatile Occupation Simulator for the [AppDaemon](https://github.com/acockburn/appdaemon) Platform.
 
+# Changes made in this fork
+
+When sending events to HomeAssistant, the event data contains rich metadata. See section further below
+
 # Installation
 
 ## Clone the Repository
@@ -85,12 +89,32 @@ Random events are not guaranteed to not overlap, however this can add additional
 Each step can also fire a home assistant event or modify the value of an input_select to match the name of the step. Both use the on and off step parameters with special values. For instance, to send a `MODE_CHANGE` custom event, use the following:
 
 ```yaml
-step_<step name>_on_1: event.MODE_CHANGE
+step_<step name>_on_<step_index>: event.OCCUSIM_TEST
+step_<step name>_off_<step_index>: event.OCCUSIM_TEST
 ```
 
 which will result in the following event:
 ```yaml
-xxxx: yyy
+{
+    "event_type": "OCCUSIM_TEST",
+    "data": {
+        "step": "<step name>",
+        "action": "on",
+        "index": "<step_index>"
+    },
+    "origin": "REMOTE",
+    "time_fired": "2022-05-25T22:42:00.129122+00:00",
+}
+{
+    "event_type": "OCCUSIM_TEST",
+    "data": {
+        "step": "<step name>",
+        "action": "off",
+        "index": "<step_index>"
+    },
+    "origin": "REMOTE",
+    "time_fired": "2022-05-25T22:42:00.129122+00:00",
+} 
 ```
 
 To set an input_select called `house_mode` to the value of the current step use the following:
