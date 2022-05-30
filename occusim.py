@@ -227,7 +227,9 @@ class OccuSim(hass.Hass):
         type = action
         m = re.match('event\.(.+)', entity)
         if m:
-            event_data = {'step': self.step, 'action': action, 'index': step_index}
+            # remove any postfix added to randomly generated events
+            sanitized_step = re.sub(re.sub("_(on|off)_\d", "", self.step))
+            event_data = {'step': sanitized_step, 'action': action, 'index': step_index}
             if not self.test:  
                 self.fire_event(m.group(1), **event_data)
             if "log" in self.args:
